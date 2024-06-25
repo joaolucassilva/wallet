@@ -36,7 +36,7 @@ jobs:
 
       - name: Upload PHPUnit coverage report
         if: success()
-        uses: actions/upload-atifact@v2
+        uses: actions/upload-artifact@v2
         with:
           name: coverage-report
           path: storage/framework/cache/data/coverage.xml

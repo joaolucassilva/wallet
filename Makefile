@@ -35,7 +35,6 @@ phpmd: # make phpmd
 phpcsfixer: # make phpcsfixer
 	@$(DOCKER_COMPOSE) exec $(SERVICE) ./vendor/bin/php-cs-fixer fix --verbose --show-progress=dots --allow-risky=yes --config=.php-cs-fixer.php
 
-
 # Ajuda
 help:
 	@echo "Comandos disponíveis:"

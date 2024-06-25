@@ -14,9 +14,7 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: '8.3'
-          extensions: mbstring, intl, dom
-          ini-values: post_max_size=256M, upload_max_filesize=256M, memory_limit=-1
-          coverage: xdebug # Enable coverage using xdebug
+          tools: composer
 
       - name: Install composer and dependencies
         run: composer install --no-progress --no-suggest --prefer-dist
@@ -35,3 +33,10 @@ jobs:
 
       - name: PHPUnit Tests
         run: ./vendor/bin/phpunit --colors=never
+
+      - name: Upload PHPUnit coverage report
+        if: success()
+        uses: actions/upload-atifact@v2
+        with:
+          name: coverage-report
+          path: storage/framework/cache/data/coverage.xml

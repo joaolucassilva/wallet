@@ -29,6 +29,13 @@ composer: # make composer COMMAND="update"
 test: # make test
 	@$(DOCKER_COMPOSE) exec $(SERVICE) php artisan test
 
+phpmd: # make phpmd
+	@$(DOCKER_COMPOSE) exec $(SERVICE) ./vendor/bin/phpmd app ansi phpmd.rulesets.xml
+
+phpcsfixer: # make phpcsfixer
+	@$(DOCKER_COMPOSE) exec $(SERVICE) ./vendor/bin/php-cs-fixer fix --verbose --show-progress=dots --allow-risky=yes --config=.php-cs-fixer.php
+
+
 # Ajuda
 help:
 	@echo "Comandos disponíveis:"
@@ -40,4 +47,5 @@ help:
 	@echo "  artisan        - Executa um comando artisan (use COMMAND=...)"
 	@echo "  composer       - Executa um comando composer (use COMMAND=...)"
 	@echo "  test           - Executa os testes do Laravel"
+	@echo "  phpmd          - Executa o PHP Mess Detector"
 	@echo "  help           - Exibe esta mensagem de ajuda"

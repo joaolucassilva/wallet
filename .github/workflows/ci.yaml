@@ -24,7 +24,7 @@ jobs:
           COMPOSER_CACHE_DIR: /tmp/composer_cache
 
       - name: Run PHPMD
-        run: phpmd . github phpmd.rulesets.xml --exclude 'tests/*, vendor/*'
+        run: vendor/bin/phpmd . github phpmd.rulesets.xml --exclude 'tests/*, vendor/*'
 
       - name: Run PHP-CS-Fixer
         run: vendor/bin/php-cs-fixer fix --config=.php-cs-fixer.php --dry-run --diff
@@ -33,7 +33,7 @@ jobs:
         if: ${{ always() }}
         run: |
           vendor/bin/php-cs-fixer fix --config=.php-cs-fixer.php --dry-run --diff
-        continue-on-error: false
+        continue-on-error: true
 
       - name: PHPUnit Tests
         run: ./vendor/bin/phpunit --colors=never

@@ -35,7 +35,7 @@ jobs:
         run: ./vendor/bin/phpunit --colors=never
 
       - name: Upload PHPUnit coverage report
-        if: success()
+        if: ${{ always() }}
         uses: actions/upload-artifact@v2
         with:
           name: coverage-report

@@ -6,13 +6,6 @@
                      http://pmd.sf.net/ruleset_xml_schema.xsd"
          xsi:noNamespaceSchemaLocation="
                      http://pmd.sf.net/ruleset_xml_schema.xsd">
-    <description>
-        This enables everything and sets some exceptions
-        like allows Facades static method usage or
-        short methods in migrations.
-
-        You know, Laravel human features.
-    </description>
 
     <rule ref="rulesets/cleancode.xml">
         <exclude name="StaticAccess" />

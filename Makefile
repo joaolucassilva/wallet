@@ -30,7 +30,7 @@ test: # make test
 	@$(DOCKER_COMPOSE) exec $(SERVICE) php artisan test
 
 phpmd: # make phpmd
-	@$(DOCKER_COMPOSE) exec $(SERVICE) ./vendor/bin/phpmd app ansi phpmd.rulesets.xml
+	@$(DOCKER_COMPOSE) exec $(SERVICE) ./vendor/bin/phpmd app,config,database,routes ansi phpmd.rulesets.xml
 
 phpcsfixer: # make phpcsfixer
 	@$(DOCKER_COMPOSE) exec $(SERVICE) ./vendor/bin/php-cs-fixer fix --verbose --show-progress=dots --allow-risky=yes --config=.php-cs-fixer.php

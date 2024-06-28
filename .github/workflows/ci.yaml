@@ -11,7 +11,12 @@ jobs:
       mysql:
         image: mysql:latest
         ports:
-          - 3306
+          - 3306:3306
+        env:
+          MYSQL_ROOT_PASSWORD: root_password
+          MYSQL_DATABASE: test_database
+          MYSQL_USER: test_user
+          MYSQL_PASSWORD: test_password
         options: >-
           --health-cmd="mysqladmin ping"
           --health-interval=10s
@@ -24,10 +29,6 @@ jobs:
         with:
           coverage: none
           php-version: 8.3
-
-      - name: Setup the MySQL database
-        run: |
-          mysql --user="root" --password="root" -h 127.0.0.1 -P ${{ job.services.mysql.ports[3306] }} -e "CREATE DATABASE \`laravel\` character set UTF8mb4 collate utf8mb4_bin;"
 
       - name: Checkout Code
         uses: actions/checkout@v3
@@ -42,6 +43,13 @@ jobs:
         run: php artisan key:generate
 
       - name: Run tests
+        env:
+          DB_CONNECTION: mysql
+          DB_HOST: 127.0.0.1
+          DB_PORT: 3306
+          DB_DATABASE: test_database
+          DB_USERNAME: test_user
+          DB_PASSWORD: test_password
         run: php artisan test
 
       - name: Run PHPMD

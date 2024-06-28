@@ -23,6 +23,12 @@ jobs:
           --health-timeout=5s
           --health-retries=3
 
+      Redis:
+        image: redis:alpine
+        ports:
+          - 6379:6379
+        options: --health-cmd="redis-cli ping" --health-interval=10s --health-timeout=5s --health-retries=3
+
     steps:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
@@ -50,6 +56,8 @@ jobs:
           DB_DATABASE: test_database
           DB_USERNAME: test_user
           DB_PASSWORD: test_password
+          REDIS_HOST: 127.0.0.1
+          REDIS_PORT: 6379
         run: php artisan test
 
       - name: Run PHPMD

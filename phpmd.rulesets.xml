@@ -8,57 +8,12 @@
                      http://pmd.sf.net/ruleset_xml_schema.xsd">
 
     <rule ref="rulesets/cleancode.xml">
-        <exclude name="StaticAccess" />
-        <exclude name="CamelCaseMethodName" />
+        <exclude name="StaticAccess"/>
+        <exclude name="CamelCaseMethodName"/>
     </rule>
-    <rule ref="rulesets/cleancode.xml/StaticAccess">
-        <properties>
-            <property name="exceptions">
-                <value>
-                    \Illuminate\Support\Facades\App,
-                    \Illuminate\Support\Facades\Artisan,
-                    \Illuminate\Support\Facades\Auth,
-                    \Illuminate\Support\Facades\Blade,
-                    \Illuminate\Support\Facades\Broadcast,
-                    \Illuminate\Support\Facades\Bus,
-                    \Illuminate\Support\Facades\Cache,
-                    \Illuminate\Support\Facades\Config,
-                    \Illuminate\Support\Facades\Cookie,
-                    \Illuminate\Support\Facades\Crypt,
-                    \Illuminate\Support\Facades\Date,
-                    \Illuminate\Support\Facades\DB,
-                    \Illuminate\Support\Facades\Event,
-                    \Illuminate\Support\Facades\File,
-                    \Illuminate\Support\Facades\Gate,
-                    \Illuminate\Support\Facades\Hash,
-                    \Illuminate\Support\Facades\Http,
-                    \Illuminate\Support\Facades\Lang,
-                    \Illuminate\Support\Facades\Log,
-                    \Illuminate\Support\Facades\Mail,
-                    \Illuminate\Support\Facades\Notification,
-                    \Illuminate\Support\Facades\ParallelTesting,
-                    \Illuminate\Support\Facades\Password,
-                    \Illuminate\Support\Facades\Queue,
-                    \Illuminate\Support\Facades\RateLimiter,
-                    \Illuminate\Support\Facades\Redirect,
-                    \Illuminate\Support\Facades\Redis,
-                    \Illuminate\Support\Facades\Request,
-                    \Illuminate\Support\Facades\Response,
-                    \Illuminate\Support\Facades\Route,
-                    \Illuminate\Support\Facades\Schema,
-                    \Illuminate\Support\Facades\Session,
-                    \Illuminate\Support\Facades\Storage,
-                    \Illuminate\Support\Facades\URL,
-                    \Illuminate\Support\Facades\Validator,
-                    \Illuminate\Support\Facades\View
-                </value>
-            </property>
-        </properties>
-    </rule>
-    <rule ref="rulesets/cleancode.xml" />
-    <rule ref="rulesets/codesize.xml" />
-    <rule ref="rulesets/controversial.xml" />
-    <rule ref="rulesets/design.xml" />
-    <rule ref="rulesets/naming.xml" />
-    <rule ref="rulesets/unusedcode.xml" />
+    <rule ref="rulesets/codesize.xml"/>
+    <rule ref="rulesets/controversial.xml"/>
+    <rule ref="rulesets/design.xml"/>
+    <rule ref="rulesets/naming.xml"/>
+    <rule ref="rulesets/unusedcode.xml"/>
 </ruleset>

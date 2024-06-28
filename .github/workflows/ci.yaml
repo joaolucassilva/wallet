@@ -1,25 +1,64 @@
 name: CI
 
-on: [ push ]
+on:
+  push:
 
 jobs:
-  build-test:
+  tests:
     runs-on: ubuntu-latest
 
+    services:
+      mysql:
+        image: mysql:latest
+        ports:
+          - 3306:3306
+        env:
+          MYSQL_ROOT_PASSWORD: root_password
+          MYSQL_DATABASE: test_database
+          MYSQL_USER: test_user
+          MYSQL_PASSWORD: test_password
+        options: >-
+          --health-cmd="mysqladmin ping"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
+
+      Redis:
+        image: redis:alpine
+        ports:
+          - 6379:6379
+        options: --health-cmd="redis-cli ping" --health-interval=10s --health-timeout=5s --health-retries=3
+
     steps:
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          coverage: none
+          php-version: 8.3
+
       - name: Checkout Code
         uses: actions/checkout@v3
 
-      - name: Set up PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: '8.3'
-          tools: composer
+      - name: Create .env file
+        run: cp .env.ci .env
 
       - name: Install composer and dependencies
-        run: composer install --no-progress --no-suggest --prefer-dist
+        run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
+
+      - name: Generate encryption key
+        run: php artisan key:generate
+
+      - name: Run tests
         env:
-          COMPOSER_CACHE_DIR: /tmp/composer_cache
+          DB_CONNECTION: mysql
+          DB_HOST: 127.0.0.1
+          DB_PORT: 3306
+          DB_DATABASE: test_database
+          DB_USERNAME: test_user
+          DB_PASSWORD: test_password
+          REDIS_HOST: 127.0.0.1
+          REDIS_PORT: 6379
+        run: php artisan test --colors
 
       - name: Run PHPMD
         run: ./vendor/bin/phpmd app,config,database,routes github phpmd.rulesets.xml

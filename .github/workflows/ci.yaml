@@ -29,13 +29,14 @@ jobs:
           php-version: 8.3
 
       - name: Setup the MySQL database
-        run: mysql -u root -h 127.0.0.1 -P ${{ job.services.mysql.ports[3306] }} -e "CREATE DATABASE laravel"
+        run: |
+          mysql -u root -h 127.0.0.1 -P ${{ job.services.mysql.ports[3306] }} -e "CREATE DATABASE laravel"
 
       - name: Checkout Code
         uses: actions/checkout@v3
 
       - name: Create .env file
-        run: cp .env.example .env
+        run: cp .env.testing .env
 
       - name: Install composer and dependencies
         run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist

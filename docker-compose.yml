@@ -101,16 +101,6 @@ services:
             - '/dev/shm:/dev/shm'
         networks:
             - sail
-    jaeger:
-        image: jaegertracing/all-in-one:latest
-        container_name: jaeger-tracing
-        environment:
-            - COLLECTOR_OTLP_ENABLED=true
-        ports:
-            - "16686:16686"
-            - "4318:4318"
-        networks:
-            - sail
 
 networks:
     sail:

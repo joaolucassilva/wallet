@@ -21,7 +21,7 @@ readonly class TransferApplication
         private UnitOfWorkInterface $unitOfWork,
         private WalletRepositoryInterface $walletRepository,
         private TransferRepositoryInterface $transferRepository,
-        private PaymentAuthorizationGatewayInterface $paymentAuthorizationGateway,
+        private PaymentAuthorizationGatewayInterface $paymentAuthorization,
     ) {
     }
 
@@ -40,7 +40,7 @@ readonly class TransferApplication
             $walletPayer->debit($input->amount);
             $walletPayee->credit($input->amount);
 
-            if ($this->paymentAuthorizationGateway->authorize()) {
+            if (!$this->paymentAuthorization->authorize()) {
                 throw new PaymentAuthorizeException();
             }
 
@@ -68,7 +68,7 @@ readonly class TransferApplication
             $this->unitOfWork->commit();
 
             Event::dispatch(new PaymentProcessed($walletPayee));
-        } catch (PaymentAuthorizeException|InsufficientBalanceException|UserDoesNotHavePermissionException $e) {
+        } catch (PaymentAuthorizeException | InsufficientBalanceException | UserDoesNotHavePermissionException $e) {
             $this->unitOfWork->rollBack();
 
             report($e);

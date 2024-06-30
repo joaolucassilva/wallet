@@ -14,7 +14,10 @@ use Illuminate\Queue\SerializesModels;
 
 class ProcessTransfer implements ShouldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    use Dispatchable;
+    use InteractsWithQueue;
+    use Queueable;
+    use SerializesModels;
 
     public function __construct(
         private readonly InputDTO $input,

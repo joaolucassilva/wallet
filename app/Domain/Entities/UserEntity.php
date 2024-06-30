@@ -7,7 +7,6 @@ namespace App\Domain\Entities;
 use App\Domain\Enums\UserTypeEnum;
 use App\Domain\ValueObjects\UUID;
 use DateTimeImmutable;
-use Exception;
 
 class UserEntity
 {

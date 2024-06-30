@@ -35,9 +35,8 @@ class PaymentAuthorizationGateway implements PaymentAuthorizationGatewayInterfac
                 512,
                 JSON_THROW_ON_ERROR
             );
-
             return $response['status'] === self::AUTHORIZATION_STATUS && $response['data']['authorization'];
-        } catch (GuzzleException|Exception $e) {
+        } catch (GuzzleException | Exception $e) {
             report($e);
 
             return false;

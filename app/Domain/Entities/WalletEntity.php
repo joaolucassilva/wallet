@@ -27,11 +27,6 @@ class WalletEntity
         return $this->id;
     }
 
-    public function getUuid(): UUID
-    {
-        return $this->uuid;
-    }
-
     public function getUser(): UserEntity
     {
         return $this->userEntity;
@@ -40,16 +35,6 @@ class WalletEntity
     public function getBalance(): Money
     {
         return $this->balance;
-    }
-
-    public function getCreatedAt(): DateTimeImmutable
-    {
-        return $this->createdAt;
-    }
-
-    public function getUpdatedAt(): DateTimeImmutable
-    {
-        return $this->updatedAt;
     }
 
     /**
@@ -64,7 +49,8 @@ class WalletEntity
             throw new UserDoesNotHavePermissionException();
         }
 
-        if ($this->balance->getAmountInCents() === 0 ||
+        if (
+            $this->balance->getAmountInCents() === 0 ||
             $amount->getAmountInCents() > $this->balance->getAmountInCents()
         ) {
             throw new InsufficientBalanceException();

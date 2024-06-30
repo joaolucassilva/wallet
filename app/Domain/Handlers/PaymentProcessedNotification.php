@@ -7,7 +7,7 @@ namespace App\Domain\Handlers;
 use App\Domain\Events\PaymentProcessed;
 use App\Domain\Gateways\NotificationGatewayInterface;
 
-readonly class SendNotificationHandler
+readonly class PaymentProcessedNotification
 {
     public function __construct(
         private NotificationGatewayInterface $notificationGateway,

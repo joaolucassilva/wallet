@@ -11,11 +11,6 @@ class Money
     ) {
     }
 
-    public function getAmountInDecimals(): float
-    {
-        return $this->amount;
-    }
-
     public function getAmountInCents(): int
     {
         return $this->amount;

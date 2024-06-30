@@ -45,7 +45,7 @@ class TransferEntity
         return $this->amount;
     }
 
-    public function getStatus(): TransferTypeEnum
+    public function getType(): TransferTypeEnum
     {
         return $this->type;
     }

@@ -15,7 +15,6 @@ return new class () extends Migration {
             $table->foreignId('payer_wallet_id')->references('id')->on('wallets');
             $table->foreignId('payee_wallet_id')->references('id')->on('wallets');
             $table->integer('amount');
-            $table->enum('status', ['pending', 'completed', 'failed'])->default('pending');
             $table->enum('type', ['incoming', 'outgoing']);
             $table->timestamps();
         });

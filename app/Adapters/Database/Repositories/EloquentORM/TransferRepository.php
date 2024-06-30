@@ -27,7 +27,7 @@ class TransferRepository implements TransferRepositoryInterface
                 'payer_wallet_id' => $payerWalletId,
                 'payee_wallet_id' => $payeeWalletId,
                 'amount' => $entity->getAmount()->getAmountInCents(),
-                'type' => $entity->getStatus()->value,
+                'type' => $entity->getType()->value,
                 'created_at' => $entity->getCreatedAt(),
                 'updated_at' => $entity->getUpdatedAt(),
             ]);

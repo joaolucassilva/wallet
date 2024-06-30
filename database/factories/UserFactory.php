@@ -4,34 +4,28 @@ declare(strict_types=1);
 
 namespace Database\Factories;
 
+use App\Domain\Enums\UserTypeEnum;
+use App\Domain\ValueObjects\UUID;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
 
-/**
- * @extends Factory<User>
- */
 class UserFactory extends Factory
 {
-    /**
-     * The current password being used by the factory.
-     */
     protected static ?string $password;
 
-    /**
-     * Define the model's default state.
-     *
-     * @return array<string, mixed>
-     */
+    protected $model = User::class;
+
     public function definition(): array
     {
         return [
+            'uuid' => UUID::generate()->__toString(),
             'name' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
-            'email_verified_at' => now(),
-            'password' => static::$password ??= Hash::make('password'),
-            'remember_token' => Str::random(10),
+            'phone' => fake()->phoneNumber(),
+            'password' => Hash::make('password'),
+            'type' => UserTypeEnum::LEGAL_PERSON->value,
+            'document' => '12312312300',
         ];
     }
 }

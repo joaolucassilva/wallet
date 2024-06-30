@@ -37,4 +37,11 @@ return [
         ],
     ],
 
+    'notify' => [
+        'url' => env('NOTIFY_URL'),
+    ],
+
+    'payment_authorization' => [
+        'url' => env('PAYMENT_AUTHORIZATION'),
+    ],
 ];

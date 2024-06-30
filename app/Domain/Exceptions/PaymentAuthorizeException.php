@@ -8,4 +8,5 @@ use Exception;
 
 class PaymentAuthorizeException extends Exception
 {
+    protected $message = 'Payment AuthorizeException';
 }

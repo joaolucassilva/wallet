@@ -13,28 +13,17 @@ return new class () extends Migration {
             $table->id();
             $table->uuid();
             $table->string('name');
-            $table->string('document')->unique();
             $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
+            $table->string('phone')->unique();
             $table->string('password');
             $table->enum('type', ['legal_person', 'natural_person']);
-            $table->rememberToken();
+            $table->string('document')->unique();
             $table->timestamps();
-        });
-
-        Schema::create('password_reset_tokens', static function (Blueprint $table) {
-            $table->string('email')->primary();
-            $table->string('token');
-            $table->timestamp('created_at')->nullable();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('users');
-        Schema::dropIfExists('password_reset_tokens');
     }
 };

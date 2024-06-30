@@ -16,7 +16,8 @@ class Transfer extends Model
         'payer_wallet_id',
         'payee_wallet_id',
         'amount',
-        'status',
         'type',
+        'created_at',
+        'updated_at',
     ];
 }

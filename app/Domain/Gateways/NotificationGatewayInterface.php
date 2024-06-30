@@ -6,5 +6,5 @@ namespace App\Domain\Gateways;
 
 interface NotificationGatewayInterface
 {
-    public function send(array $data);
+    public function send(array $data): void;
 }

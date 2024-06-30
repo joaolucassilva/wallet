@@ -2,53 +2,56 @@
 
 declare(strict_types=1);
 
-use App\Applications\Tranfers\InputDTO;
-use App\Domain\Entities\TransferEntity;
-use App\Domain\Exceptions\PaymentAuthorizeException;
-use App\Domain\Gateways\PaymentAuthorizationGatewayInterface;
-use App\Domain\Repositories\TransferRepositoryInterface;
-use App\Domain\Repositories\UserRepositoryInterface;
-use App\Domain\Repositories\WalletRepositoryInterface;
-use App\Domain\UnitOfWorkInterface;
+namespace App\Applications\Tranfers;
 
-class TransferApplication
+use App\Domain\Database\Repositories\TransferRepositoryInterface;
+use App\Domain\Database\Repositories\WalletRepositoryInterface;
+use App\Domain\Database\UnitOfWorkInterface;
+use App\Domain\Entities\TransferEntity;
+use App\Domain\Events\PaymentProcessed;
+use App\Domain\Exceptions\InsufficientBalanceException;
+use App\Domain\Exceptions\PaymentAuthorizeException;
+use App\Domain\Exceptions\UserDoesNotHavePermissionException;
+use App\Domain\Gateways\PaymentAuthorizationGatewayInterface;
+use Illuminate\Support\Facades\Event;
+
+readonly class TransferApplication
 {
     public function __construct(
-        private readonly UnitOfWorkInterface $unitOfWork,
-        private readonly UserRepositoryInterface $userRepository,
-        private readonly WalletRepositoryInterface $walletRepository,
-        private readonly TransferRepositoryInterface $transferRepository,
-        private readonly PaymentAuthorizationGatewayInterface $paymentAuthorizationGateway,
+        private UnitOfWorkInterface $unitOfWork,
+        private WalletRepositoryInterface $walletRepository,
+        private TransferRepositoryInterface $transferRepository,
+        private PaymentAuthorizationGatewayInterface $paymentAuthorizationGateway,
     ) {
     }
 
+    /**
+     * @param InputDTO $input
+     * @return void
+     */
     public function execute(InputDTO $input): void
     {
         $this->unitOfWork->beginTransaction();
 
         try {
-            $payer = $this->userRepository->findById($input->payer);
-            if (!$payer->canInitiateTransfer()) {
-                throw new Exception('The payer user does not have permission to initiate transfers.');
-            }
+            $walletPayer = $this->walletRepository->findByUserId($input->payer);
+            $walletPayee = $this->walletRepository->findByUserId($input->payee);
 
-            $payee = $this->userRepository->findById($input->payee);
-
-            $payer->getWallet()?->debit($input->amount);
-            $payee->getWallet()?->credit($input->amount);
+            $walletPayer->debit($input->amount);
+            $walletPayee->credit($input->amount);
 
             if ($this->paymentAuthorizationGateway->authorize()) {
                 throw new PaymentAuthorizeException();
             }
 
-            $this->walletRepository->updateBalance($payer->getWallet());
-            $this->walletRepository->updateBalance($payee->getWallet());
+            $this->walletRepository->updateBalance($walletPayer);
+            $this->walletRepository->updateBalance($walletPayee);
 
             $this->transferRepository
                 ->create(
                     TransferEntity::createIncoming(
-                        payer: $payer->getWallet(),
-                        payee: $payee->getWallet(),
+                        payer: $walletPayer,
+                        payee: $walletPayee,
                         amount: $input->amount,
                     )
                 );
@@ -56,14 +59,16 @@ class TransferApplication
             $this->transferRepository
                 ->create(
                     TransferEntity::createOutgoing(
-                        payer: $payer->getWallet(),
-                        payee: $payee->getWallet(),
+                        payer: $walletPayer,
+                        payee: $walletPayee,
                         amount: $input->amount,
                     )
                 );
 
             $this->unitOfWork->commit();
-        } catch (Exception $e) {
+
+            Event::dispatch(new PaymentProcessed($walletPayee));
+        } catch (PaymentAuthorizeException|InsufficientBalanceException|UserDoesNotHavePermissionException $e) {
             $this->unitOfWork->rollBack();
 
             report($e);

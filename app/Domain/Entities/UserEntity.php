@@ -6,18 +6,22 @@ namespace App\Domain\Entities;
 
 use App\Domain\Enums\UserTypeEnum;
 use App\Domain\ValueObjects\UUID;
+use DateTimeImmutable;
 use Exception;
 
 class UserEntity
 {
     public function __construct(
-        private int $id,
-        private UUID $uuid,
-        private string $name,
-        private string $email,
-        private string $password,
-        private UserTypeEnum $type,
-        private ?WalletEntity $wallet = null,
+        private readonly int $id,
+        private readonly UUID $uuid,
+        private readonly string $name,
+        private readonly string $email,
+        private readonly string $phone,
+        private readonly string $password,
+        private readonly UserTypeEnum $type,
+        private readonly string $document,
+        private readonly DateTimeImmutable $createdAt,
+        private readonly DateTimeImmutable $updatedAt,
     ) {
     }
 
@@ -26,16 +30,18 @@ class UserEntity
         return $this->type;
     }
 
-    public function getWallet(): ?WalletEntity
-    {
-        return $this->wallet;
-    }
-
-    /**
-     * @throws Exception
-     */
     public function canInitiateTransfer(): bool
     {
         return $this->type === UserTypeEnum::NATURAL_PERSON;
+    }
+
+    public function getEmail(): string
+    {
+        return $this->email;
+    }
+
+    public function getPhone(): string
+    {
+        return $this->phone;
     }
 }

@@ -11,35 +11,51 @@ use DateTimeImmutable;
 
 class TransferEntity
 {
-    private DateTimeImmutable $createdAt;
-    private DateTimeImmutable $updatedAt;
-
     public function __construct(
         private readonly WalletEntity $payerWallet,
         private readonly WalletEntity $payeeWallet,
         private readonly Money $amount,
         private readonly TransferTypeEnum $type,
-        private Uuid|string $uuid = '',
+        private ?Uuid $uuid = null,
+        private ?DateTimeImmutable $createdAt = null,
+        private ?DateTimeImmutable $updatedAt = null,
     ) {
-        if ($this->uuid === '') {
-            $this->uuid = Uuid::generate();
-        }
-
-        $this->createdAt = new DateTimeImmutable();
-        $this->updatedAt = new DateTimeImmutable();
+        $this->uuid = !is_null($this->uuid) ?: UUID::generate();
+        $this->createdAt = !is_null($this->createdAt) ?: new DateTimeImmutable();
+        $this->updatedAt = !is_null($this->updatedAt) ?: new DateTimeImmutable();
     }
 
-    public function getIdentifier(): UUID
+    public function getUuid(): UUID
     {
         return $this->uuid;
     }
 
-    public function createdAt(): DateTimeImmutable
+    public function getPayerWallet(): WalletEntity
+    {
+        return $this->payerWallet;
+    }
+
+    public function getPayeeWallet(): WalletEntity
+    {
+        return $this->payeeWallet;
+    }
+
+    public function getAmount(): Money
+    {
+        return $this->amount;
+    }
+
+    public function getStatus(): TransferTypeEnum
+    {
+        return $this->type;
+    }
+
+    public function getCreatedAt(): DateTimeImmutable
     {
         return $this->createdAt;
     }
 
-    public function updatedAt(): DateTimeImmutable
+    public function getUpdatedAt(): DateTimeImmutable
     {
         return $this->updatedAt;
     }

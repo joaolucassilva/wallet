@@ -4,27 +4,27 @@ declare(strict_types=1);
 
 namespace App\Http\Requests;
 
+use App\Applications\Tranfers\InputDTO;
+use App\Domain\ValueObjects\Money;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreTransferRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
-    public function authorize(): bool
-    {
-        return false;
-    }
-
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
-     */
     public function rules(): array
     {
         return [
-            //
+            'payer' => 'required',
+            'payee' => 'required',
+            'value' => 'required',
         ];
+    }
+
+    public function toDTO(): InputDTO
+    {
+        return new InputDTO(
+            payer: $this->payer,
+            payee: $this->payee,
+            amount: Money::setAmountDecimal($this->value),
+        );
     }
 }

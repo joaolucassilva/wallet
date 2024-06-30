@@ -7,7 +7,7 @@ namespace App\Domain\ValueObjects;
 class Money
 {
     public function __construct(
-        private int $amount
+        private readonly int $amount
     ) {
     }
 
@@ -18,11 +18,13 @@ class Money
 
     public function getAmountInCents(): int
     {
-        return (int)round($this->amount * 100);
+        return $this->amount;
     }
 
-    public function setAmount(float $amount): void
+    public static function setAmountDecimal(float $amount): self
     {
-        $this->amount = (int)round($amount * 100);
+        return new self(
+            amount: (int)($amount * 100)
+        );
     }
 }

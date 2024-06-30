@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Adapters;
+namespace App\Adapters\Database;
 
-use App\Domain\UnitOfWorkInterface;
+use App\Domain\Database\UnitOfWorkInterface;
 use Illuminate\Support\Facades\DB;
 
 class UnitOfWork implements UnitOfWorkInterface

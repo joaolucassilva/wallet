@@ -5,64 +5,17 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreTransferRequest;
-use App\Http\Requests\UpdateTransferRequest;
-use App\Models\Transfer;
+use App\Jobs\ProcessTransfer;
+use Illuminate\Http\JsonResponse;
 
 class TransferController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function __invoke(StoreTransferRequest $request): JsonResponse
     {
-        //
-    }
+        ProcessTransfer::dispatch($request->toDTO());
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(StoreTransferRequest $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Transfer $transfer)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Transfer $transfer)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateTransferRequest $request, Transfer $transfer)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Transfer $transfer)
-    {
-        //
+        return response()->json([
+            'message' => 'Transferência em processamento',
+        ]);
     }
 }

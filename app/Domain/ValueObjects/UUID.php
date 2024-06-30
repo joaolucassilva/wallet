@@ -25,4 +25,9 @@ class UUID
             throw new InvalidArgumentException('Invalid UUID');
         }
     }
+
+    public function __toString(): string
+    {
+        return $this->uuid;
+    }
 }

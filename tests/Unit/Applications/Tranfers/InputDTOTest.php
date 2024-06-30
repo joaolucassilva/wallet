@@ -15,7 +15,7 @@ class InputDTOTest extends TestCase
         $dto = new InputDTO(
             payer: 4,
             payee: 15,
-            amount: new Money(100.0),
+            amount: new Money(10000),
         );
 
         $this->assertSame(4, $dto->payer);

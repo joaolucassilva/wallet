@@ -72,16 +72,18 @@ docker run --rm \
 ./vendor/bin/sail up -d
 ```
 
-## Uso
-
-### Testes
+## Testes
 
 Para rodar os testes, use o comando:
+
 ```shell
 ./vendor/bin/sail artisan test
+
 ```
 
-### Transferências
+## Uso
+
+### Criar Transferência
 
 Para realizar uma transferência entre duas carteiras, envie uma requisição POST para a
 rota /transfer com o payload a seguir:

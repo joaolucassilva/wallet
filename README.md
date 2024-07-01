@@ -83,6 +83,11 @@ Para rodar os testes, use o comando:
 
 ## Uso
 
+### Execute o worker para processamento e envio de notificação
+```shell
+./vendor/bin/sail artisan queue:work
+```
+
 ### Criar Transferência
 
 Para realizar uma transferência entre duas carteiras, envie uma requisição POST para a
